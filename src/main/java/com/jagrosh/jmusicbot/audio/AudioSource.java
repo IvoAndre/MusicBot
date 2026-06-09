@@ -36,7 +36,6 @@ import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
 import dev.lavalink.youtube.YoutubeAudioSourceManager;
 import dev.lavalink.youtube.YoutubeSourceOptions;
 import dev.lavalink.youtube.clients.AndroidVrWithThumbnail;
-import dev.lavalink.youtube.clients.ClientOptions;
 import dev.lavalink.youtube.clients.MWebWithThumbnail;
 import dev.lavalink.youtube.clients.Tv;
 import dev.lavalink.youtube.clients.TvHtml5SimplyWithThumbnail;
@@ -268,30 +267,28 @@ public enum AudioSource
      * 
      * <p>When OAuth is enabled, we use a combination of clients:
      * <ul>
-     *   <li><b>AndroidVrWithThumbnail</b> - Metadata loading (non-embedded, non-OAuth)</li>
-     *   <li><b>MWebWithThumbnail</b> - Metadata loading (non-embedded, non-OAuth)</li>
-     *   <li><b>Web</b> - Metadata loading (non-embedded, non-OAuth)</li>
+     *   <li><b>AndroidVrWithThumbnail, MWebWithThumbnail, WebWithThumbnail</b> -
+     *       Primary clients for loading and playback. These clients can often play
+     *       public videos without OAuth while the TV OAuth client remains available
+     *       for videos that need account context.</li>
      *   <li><b>Tv</b> - OAuth-compatible streaming-only client. Used as fallback for loading
      *       audio stream formats during playback.</li>
      *   <li><b>TvHtml5SimplyWithThumbnail</b> - *Not oAuth compatible* Used as fallback for loading
      *       audio stream formats during playback.</li>
      * </ul>
      * 
-     * <p>
+     * <p>Keep non-OAuth-capable playback clients enabled even in OAuth mode. If OAuth has
+     * not been authorised yet, disabling these clients forces every playback attempt through
+     * TV clients and makes common "Sign in to confirm you're not a bot" failures more likely.
      */
     private static Client[] buildYoutubeClients(boolean useOauth)
     {
         if (useOauth)
         {
-            // Clients configured for metadata loading only (no playback/streaming)
-            // This handles direct URLs without embedded player restrictions
-            ClientOptions metadataOnly = new ClientOptions();
-            metadataOnly.setPlayback(false);
-            
             return new Client[] {
-                new AndroidVrWithThumbnail(metadataOnly), // metadata loading (non-embedded, non-OAuth)
-                new MWebWithThumbnail(metadataOnly),      // metadata loading (non-embedded, non-OAuth)
-                new WebWithThumbnail(metadataOnly),       // metadata loading (non-embedded, non-OAuth)
+                new AndroidVrWithThumbnail(), // loading + playback (non-embedded, non-OAuth)
+                new MWebWithThumbnail(),      // loading + playback (non-embedded, non-OAuth)
+                new WebWithThumbnail(),       // loading + playback (non-embedded, non-OAuth)
                 new Tv(),
                 new TvHtml5SimplyWithThumbnail()
             };
