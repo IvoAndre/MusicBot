@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.arifbanai</groupId>
     <artifactId>JMusicBot</artifactId>
-    <version>0.7.0</version>
+    <version>0.7.1-TESTA</version>
     <packaging>jar</packaging>
 
     <name>JMusicBot</name>
@@ -452,8 +452,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>All</shadedClassifierName>
+                            <outputFile>${project.build.directory}/${project.build.finalName}.jar</outputFile>
                             <artifactSet>
                                 <includes>
                                     <include>*:*</include>
@@ -790,8 +789,7 @@
                                     <goal>shade</goal>
                                 </goals>
                                 <configuration>
-                                    <shadedArtifactAttached>true</shadedArtifactAttached>
-                                    <shadedClassifierName>All</shadedClassifierName>
+                                    <outputFile>${project.build.directory}/${project.build.finalName}.jar</outputFile>
                                     <artifactSet>
                                         <includes>
                                             <include>*:*</include>
