@@ -42,7 +42,8 @@ public class DiscordService {
                         CacheFlag.EMOJI,
                         CacheFlag.ONLINE_STATUS,
                         CacheFlag.STICKER,
-                        CacheFlag.SCHEDULED_EVENTS
+                        CacheFlag.SCHEDULED_EVENTS,
+                        CacheFlag.SOUNDBOARD_SOUNDS
                 )
                 .setActivity(config.isGameNone() ? null : Activity.playing("loading..."))
                 .setStatus(config.getStatus() == OnlineStatus.INVISIBLE || config.getStatus() == OnlineStatus.OFFLINE
